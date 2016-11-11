@@ -8,6 +8,7 @@ public class firefox {
 	FirefoxDriver dr1=new FirefoxDriver();
 	dr1.get("http://google.com");
 	System.out.println("completed git hub hi........");
+	System.out.println("hello jenkins.............");
 	}
 
 }
