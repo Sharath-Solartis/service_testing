@@ -31,11 +31,11 @@ public class properties_handle extends Properties
 			try 
 			{
 				
-				configuration = new FileInputStream
-						(path);
+				configuration = new FileInputStream(path);
 			} catch (FileNotFoundException e) 
 			{
 				// TODO Auto-generated catch block
+				System.out.println("file not found");
 				e.printStackTrace();
 			}
 			try 

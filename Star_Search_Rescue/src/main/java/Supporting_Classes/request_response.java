@@ -28,12 +28,12 @@ public class request_response {
     	{
     		
     		json_object = new json_handle();
-    		json_object.get_filepath(this.filepath);
+    		json_object.get_filepath(this.filepath+".json");
     	}
     	else if(type.equals("xml"))
     	{
     		xml_object = new xml_manipulation();
-    		xml_object.get_filepath(this.filepath);
+    		xml_object.get_filepath(this.filepath+".xml");
     	}
     }
     

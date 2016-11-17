@@ -115,6 +115,27 @@ public class xml_manipulation {
 	}
 	
 	
+	private String getxpath(String xpath) throws UnsupportedEncodingException, IOException,DocumentException
+	{
+		if(!(xpath.contains("=")))
+		{
+			return xpath;
+		}
+		else
+		{
+			String path[] = xpath.split("=");
+			File inputFile = new File(file_location);
+	        SAXReader reader = new SAXReader();
+	        Document document = reader.read(inputFile);
+	        String output = null;
+	        output = path[0];
+	        Node node = document.selectSingleNode(output);
+	        
+			
+		}
+		return null;
+	}
+	
 	
 	
 	 

@@ -8,21 +8,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import Rating_API.Star_Search_Rescue.app_json_db;
+
+//import Rating_API.Star_Search_Rescue.app_json_db;
+
 
 
 
 
 public class database_operation
 {
+	public static properties_handle config = null;
 	private static Connection conn = null;
-	private static final String JDBC_DRIVER =app_json_db.config.getProperty("jdbc_driver");
+	private static String JDBC_DRIVER = null ;
 	//"com.mysql.jdbc.Driver"
-	private static final String DB_URL = app_json_db.config.getProperty("db_url");
+	private static String DB_URL =null ;
 	//"jdbc:mysql://192.168.35.2:3391/Search_rescue";
-	private static final String USER = app_json_db.config.getProperty("db_username");
+	private static String USER=null;
 	//"root";
-	private static final String PASS = app_json_db.config.getProperty("db_password");
+	private static String PASS =null; //app_json_db
 	//"password";
 	
 	private String query = null;
@@ -32,7 +35,10 @@ public class database_operation
 	
 	public static void conn_setup() throws SQLException,ClassNotFoundException
 	{
-		
+		JDBC_DRIVER =config.getProperty("jdbc_driver");
+		DB_URL = config.getProperty("db_url");
+		USER=config.getProperty("db_username");
+		PASS =config.getProperty("db_password");
 		if(conn == null)
 		{
 				
