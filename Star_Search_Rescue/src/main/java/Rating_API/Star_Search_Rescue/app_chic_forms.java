@@ -104,7 +104,8 @@ public class app_chic_forms
 			input.update_row();
 			//output.update_row();
 			
-		}while(input.move_forward() && output.move_forward());
+		}while(input.move_forward());
+		//while(input.move_forward() && output.move_forward());
 		
 		database_operation.close_conn();
 					

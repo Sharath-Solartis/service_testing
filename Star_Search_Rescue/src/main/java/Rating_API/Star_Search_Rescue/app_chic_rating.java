@@ -78,10 +78,40 @@ public class app_chic_rating
 				for(int i=0;i<actual_column_size;i++)
 				{
 					System.out.println(actual_column_col[i]+json_elements.read_data(actual_column_col[i]));
-					System.out.println(json_elements.read_data(actual_column_col[i])+actual_column_col[i]+response.read(json_elements.read_data(actual_column_col[i])));
-					output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+					//System.out.println(json_elements.read_data(actual_column_col[i])+actual_column_col[i]+response.read(json_elements.read_data(actual_column_col[i])));
+					
+						
+							if(actual_column_col[i].equals("V1_Individual_PhysDamage_prem_rs") && input.read_data("V1_PhysicalDamage_inluded").equals("Y"))
+							{
+								output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+							}
+							
+						
+						
+							else if(actual_column_col[i].equals("V2_Individual_PhysDamage_prem_rs") && input.read_data("V2_PhysicalDamage_inluded").equals("Y"))
+							{
+								try
+								{
+									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+								}catch(Exception e1)
+								{
+									output.write_data(actual_column_col[i],"Null value");
+								}
+							}
+						
+					
+							else
+							{
+								try
+								{
+									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+								}catch(Exception e1)
+								{
+									output.write_data(actual_column_col[i],"Null value");
+								}
+							}
 				}
-				for(int i=0;i<status_column_size;i++)
+				/*for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
@@ -97,7 +127,7 @@ public class app_chic_rating
 						output.write_data(status_column, "Fail");
 					}
 					
-				}
+				}*/
 			}
 			input.write_data("flag_for_execution", "Completed");
 			output.write_data("flag_for_execution", "Completed");
@@ -111,7 +141,7 @@ public class app_chic_rating
     }
     
 	
-	private static boolean premium_comp(String expected,String actual)
+	/*private static boolean premium_comp(String expected,String actual)
 	{
 		
 		boolean status = false;
@@ -137,5 +167,5 @@ public class app_chic_rating
 			}
 		}
 		return status;
-	}
+	}*/
 }
