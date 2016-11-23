@@ -13,10 +13,10 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_chic_rating 
+public class app_DTC_rate 
 {
     //private static FileInputStream configuration1;
-	
+	//public static properties_handle config = null;
 	public static request_response sample_input = null;
 	public static request_response request = null;
 	public static request_response response = null;
@@ -25,7 +25,7 @@ public class app_chic_rating
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/07 CHIC/Rating/Release1/configuration_file/config_XML.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release1/Rating/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
@@ -53,7 +53,10 @@ public class app_chic_rating
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
 				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
+			
 				request.String_to_object(sample_input.Object_to_String());
+			
+				
 				for(int i=0;i<input_column_size;i++)
 				{
 					request.write(json_elements.read_data(input_column_col[i]), input.read_data(input_column_col[i]));
@@ -62,6 +65,8 @@ public class app_chic_rating
 				http_handle http = new http_handle(database_operation.config.getProperty("test_url"),"POST");
 				http.add_header("Content-Type", database_operation.config.getProperty("content_type"));
 				http.add_header("Token", database_operation.config.getProperty("token"));
+				http.add_header("EventName", database_operation.config.getProperty("EventName"));//added
+				
 				String input_data = request.Object_to_String();
 				http.send_data(input_data);
 				
@@ -73,49 +78,34 @@ public class app_chic_rating
 					e.printStackTrace();
 				}
 				
-				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));  // response location
+				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));// response location
+				//System.out.println(response);
 				response.String_to_object(response_string);
+				
 				for(int i=0;i<actual_column_size;i++)
 				{
-					System.out.println(actual_column_col[i]+json_elements.read_data(actual_column_col[i]));
-					//System.out.println(json_elements.read_data(actual_column_col[i])+actual_column_col[i]+response.read(json_elements.read_data(actual_column_col[i])));
-					
-						
-							if(actual_column_col[i].equals("V1_Individual_PhysDamage_prem_rs") && input.read_data("V1_PhysicalDamage_inluded").equals("Y"))
-							{
-								output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-							}
-							
-						
-						
-							else if(actual_column_col[i].equals("V2_Individual_PhysDamage_prem_rs") && input.read_data("V2_PhysicalDamage_inluded").equals("Y"))
-							{
-								try
-								{
-									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-								}catch(Exception e1)
-								{
-									output.write_data(actual_column_col[i],"Null value");
-								}
-							}
-						
-					
-							else
-							{
-								try
-								{
-									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-								}catch(Exception e1)
-								{
-									output.write_data(actual_column_col[i],"Null value");
-								}
-							}
+					//System.out.println(response.read("..RequestStatus").replaceAll("\\[\"", "").replaceAll("\"\\]", ""));
+					String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+					System.out.println(status_code);
+					if(status_code.equals("SUCCESS"))
+					{
+						output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+						output.write_data("Flag_for_execution", status_code);
+					}
+					else
+					{
+						//output.write_data("", response.read(""));
+						//output.write_data("", response.read(""));
+						//output.write_data("", response.read(""));
+						//output.write_data("", response.read(""));
+						System.out.println("error response");
+						output.write_data("Flag_for_execution", "Error response");
+					}
 				}
-				for(int i=0;i<status_column_size;i++)
+			/*	for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
-					System.out.println(status_column_col[i]);
 					String actual_column = status_ind_col[1];
 					String status_column = status_ind_col[2];
 					if(premium_comp(output.read_data(expected_column),output.read_data(actual_column)))
@@ -127,10 +117,10 @@ public class app_chic_rating
 						output.write_data(status_column, "Fail");
 					}
 					
-				}
+				}*/
 			}
 			input.write_data("flag_for_execution", "Completed");
-			output.write_data("flag_for_execution", "Completed");
+			//output.write_data("flag_for_execution", "Completed");
 			input.update_row();
 			output.update_row();
 			
@@ -141,11 +131,11 @@ public class app_chic_rating
     }
     
 	
-	private static boolean premium_comp(String expected,String actual)
+/*	private static boolean premium_comp(String expected,String actual)
 	{
 		
 		boolean status = false;
-		if(expected == null || actual == null ||expected.equals("") || actual.equals(""))
+		if(expected == null || actual == null)
 		{
 			status = false;
 		}
@@ -155,9 +145,6 @@ public class app_chic_rating
 			actual = actual.replaceAll("\\[\"", "");
 			expected = expected.replaceAll("\"\\]", "");
 			actual = actual.replaceAll("\"\\]", "");
-			expected = expected.replaceAll("\\.[0-9]*", "");
-			actual = actual.replaceAll("\\.[0-9]*", "");
-			
 			System.out.println(actual);
 			System.out.println(expected);
 			if(expected.equals(actual))
@@ -170,5 +157,5 @@ public class app_chic_rating
 			}
 		}
 		return status;
-	}
+	}*/
 }

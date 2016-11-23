@@ -31,7 +31,7 @@ public class app_json
         //System.out.println( "Hello World!" );
     	System.setProperty("jsse.enableSNIExtension", "false");
 		properties_handle config = new properties_handle
-				("Q:/Automation Team/1 Projects/06 Star Search_rescue/Search_n_Rescue/program_doc/Release_1/Rating/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/06 Star Search_rescue/Search_n_Rescue/program_doc/Release_1/Issue_Certificate/configuration_file/config.properties");
 		
 		File output =new File(config.getProperty("report_file"));
 		if (!output.exists()) 
@@ -70,8 +70,9 @@ public class app_json
 			{
 				input_excel.set_columnnumber(3);
 				input_json = new json_handle(config.getProperty("sample_request"));   // request location
-				
+				System.out.println("Sample_String - "+input_json.jsontostring());
 				output_json = new json_handle(config.getProperty("request_location")+input_excel.read_data(input_excel.get_rownumber(), 1)+"request"+input_excel.read_data(input_excel.get_rownumber(), 0)+".json"); // saved request location
+				
 				output_json.create_json(input_json.jsontostring());
 				while(input_excel.has_next_column())
 				{
@@ -92,7 +93,7 @@ public class app_json
 					input_excel.next_col();
 				}
 				
-			
+				System.out.println(config.getProperty("token"));
 				http_handle http = new http_handle(config.getProperty("test_url"),"POST");
 				http.add_header("Content-Type", "application/json");
 				http.add_header("Token", config.getProperty("token"));
@@ -107,7 +108,7 @@ public class app_json
 					e.printStackTrace();
 				}
 				response_json = new json_handle(config.getProperty("response_location")+input_excel.read_data(input_excel.get_rownumber(),1)+"response"+input_excel.read_data(input_excel.get_rownumber(),0)+".json");  // response location
-				//System.out.println(response_string);
+				System.out.println(response_string);
 				response_json.create_json(response_string);
 				
 				

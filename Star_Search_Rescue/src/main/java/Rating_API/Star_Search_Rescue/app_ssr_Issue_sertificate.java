@@ -13,10 +13,10 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_chic_rating 
+public class app_ssr_Issue_sertificate 
 {
     //private static FileInputStream configuration1;
-	
+	//public static properties_handle config = null;
 	public static request_response sample_input = null;
 	public static request_response request = null;
 	public static request_response response = null;
@@ -25,7 +25,7 @@ public class app_chic_rating
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/07 CHIC/Rating/Release1/configuration_file/config_XML.properties");
+				("Q:/Automation Team/1 Projects/06 Star Search_rescue/Search_n_Rescue/program_doc/Release_1/Rating/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
@@ -77,45 +77,12 @@ public class app_chic_rating
 				response.String_to_object(response_string);
 				for(int i=0;i<actual_column_size;i++)
 				{
-					System.out.println(actual_column_col[i]+json_elements.read_data(actual_column_col[i]));
-					//System.out.println(json_elements.read_data(actual_column_col[i])+actual_column_col[i]+response.read(json_elements.read_data(actual_column_col[i])));
-					
-						
-							if(actual_column_col[i].equals("V1_Individual_PhysDamage_prem_rs") && input.read_data("V1_PhysicalDamage_inluded").equals("Y"))
-							{
-								output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-							}
-							
-						
-						
-							else if(actual_column_col[i].equals("V2_Individual_PhysDamage_prem_rs") && input.read_data("V2_PhysicalDamage_inluded").equals("Y"))
-							{
-								try
-								{
-									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-								}catch(Exception e1)
-								{
-									output.write_data(actual_column_col[i],"Null value");
-								}
-							}
-						
-					
-							else
-							{
-								try
-								{
-									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-								}catch(Exception e1)
-								{
-									output.write_data(actual_column_col[i],"Null value");
-								}
-							}
+					output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
 				}
 				for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
-					System.out.println(status_column_col[i]);
 					String actual_column = status_ind_col[1];
 					String status_column = status_ind_col[2];
 					if(premium_comp(output.read_data(expected_column),output.read_data(actual_column)))
@@ -145,7 +112,7 @@ public class app_chic_rating
 	{
 		
 		boolean status = false;
-		if(expected == null || actual == null ||expected.equals("") || actual.equals(""))
+		if(expected == null || actual == null)
 		{
 			status = false;
 		}
@@ -155,9 +122,6 @@ public class app_chic_rating
 			actual = actual.replaceAll("\\[\"", "");
 			expected = expected.replaceAll("\"\\]", "");
 			actual = actual.replaceAll("\"\\]", "");
-			expected = expected.replaceAll("\\.[0-9]*", "");
-			actual = actual.replaceAll("\\.[0-9]*", "");
-			
 			System.out.println(actual);
 			System.out.println(expected);
 			if(expected.equals(actual))

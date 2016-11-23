@@ -93,6 +93,7 @@ public class json_handle
 	public String jsontostring()
 	{
 		doc.parse(enable_read());
+		//System.out.println(doc.jsonString());
 		return doc.jsonString();
 	}
 	

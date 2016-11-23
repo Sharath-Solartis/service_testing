@@ -56,6 +56,7 @@ public class http_handle
 		try {
 			br = new BufferedReader(new InputStreamReader(
 					(conn.getInputStream())));
+					
 			while ((output = br.readLine()) != null) 
 			{
 				if(output2 == null)

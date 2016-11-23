@@ -19,9 +19,9 @@ public class database_operation
 {
 	public static properties_handle config = null;
 	private static Connection conn = null;
-	private static String JDBC_DRIVER = null ;
+	private static String JDBC_DRIVER = null;
 	//"com.mysql.jdbc.Driver"
-	private static String DB_URL =null ;
+	private static String DB_URL =null;
 	//"jdbc:mysql://192.168.35.2:3391/Search_rescue";
 	private static String USER=null;
 	//"root";
@@ -36,6 +36,7 @@ public class database_operation
 	public static void conn_setup() throws SQLException,ClassNotFoundException
 	{
 		JDBC_DRIVER =config.getProperty("jdbc_driver");
+		//com.mysql.jdbc.Driver
 		DB_URL = config.getProperty("db_url");
 		USER=config.getProperty("db_username");
 		PASS =config.getProperty("db_password");
