@@ -93,7 +93,7 @@ public class request_response {
     	
 	   if(type.equals("json"))
 	   {
-		   System.out.println("read");
+		   //System.out.println("read");
 		   output = json_object.read(path);
 	   }
 	   else if(type.equals("xml"))

@@ -1,10 +1,13 @@
 package Rating_API.Star_Search_Rescue;
 
 import Supporting_Classes.http_handle;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+
 import org.dom4j.DocumentException;
+
 import Supporting_Classes.database_operation;
 import Supporting_Classes.properties_handle;
 import Supporting_Classes.request_response;
@@ -73,6 +76,7 @@ public class app_DTC_rate
 				String response_string = null;
 				try {
 					response_string = http.Receive_data();
+					System.out.println(response_string);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -98,11 +102,17 @@ public class app_DTC_rate
 						//output.write_data("", response.read(""));
 						//output.write_data("", response.read(""));
 						//output.write_data("", response.read(""));
-						System.out.println("error response");
+						
+						String message_code=(response.read("..messageCode").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+						System.out.println(message_code);
+						String user_message=(response.read("..UserMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+						System.out.println(user_message);
 						output.write_data("Flag_for_execution", "Error response");
+						output.write_data("Message_code", message_code);
+						output.write_data("User_maessage", user_message);
 					}
 				}
-			/*	for(int i=0;i<status_column_size;i++)
+				/*for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
@@ -131,11 +141,11 @@ public class app_DTC_rate
     }
     
 	
-/*	private static boolean premium_comp(String expected,String actual)
+	private static boolean premium_comp(String expected,String actual)
 	{
 		
 		boolean status = false;
-		if(expected == null || actual == null)
+		if(expected == null || actual == null ||expected.equals("") || actual.equals(""))
 		{
 			status = false;
 		}
@@ -145,6 +155,9 @@ public class app_DTC_rate
 			actual = actual.replaceAll("\\[\"", "");
 			expected = expected.replaceAll("\"\\]", "");
 			actual = actual.replaceAll("\"\\]", "");
+			expected = expected.replaceAll("\\.[0-9]*", "");
+			actual = actual.replaceAll("\\.[0-9]*", "");
+			
 			System.out.println(actual);
 			System.out.println(expected);
 			if(expected.equals(actual))
@@ -157,5 +170,5 @@ public class app_DTC_rate
 			}
 		}
 		return status;
-	}*/
+	}
 }
