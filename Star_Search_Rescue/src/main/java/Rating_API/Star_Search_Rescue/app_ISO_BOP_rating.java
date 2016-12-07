@@ -1,10 +1,13 @@
 package Rating_API.Star_Search_Rescue;
 
 import Supporting_Classes.http_handle;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+
 import org.dom4j.DocumentException;
+
 import Supporting_Classes.database_operation;
 import Supporting_Classes.properties_handle;
 import Supporting_Classes.request_response;
@@ -25,7 +28,7 @@ public class app_ISO_BOP_rating
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/06 Star Search_rescue/Search_n_Rescue/program_doc/Release_1/Rating/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/09 ISO/Release_1/Rating/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
@@ -77,7 +80,11 @@ public class app_ISO_BOP_rating
 				response.String_to_object(response_string);
 				for(int i=0;i<actual_column_size;i++)
 				{
-					output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+					String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+					output.write_data(actual_column_col[i],actual);
+					//output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+					
+					System.out.println(actual);
 				}
 				for(int i=0;i<status_column_size;i++)
 				{
