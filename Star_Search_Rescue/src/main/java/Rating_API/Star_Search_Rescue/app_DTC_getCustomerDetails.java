@@ -1,10 +1,13 @@
 package Rating_API.Star_Search_Rescue;
 
 import Supporting_Classes.http_handle;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+
 import org.dom4j.DocumentException;
+
 import Supporting_Classes.database_operation;
 import Supporting_Classes.properties_handle;
 import Supporting_Classes.request_response;
@@ -77,15 +80,25 @@ public class app_DTC_getCustomerDetails
 				
 				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));  // response location
 				response.String_to_object(response_string);
-				/*for(int i=0;i<actual_column_size;i++)
+				for(int i=0;i<actual_column_size;i++)
 				{
-					output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-				}*/
-		/*	for(int i=0;i<status_column_size;i++)
+					try
+					{
+						String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+						output.write_data(actual_column_col[i],actual);
+					//output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+				    }
+					catch(Exception e1)
+					{
+						output.write_data(actual_column_col[i],"Null value");
+					}
+			   }
+	for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
 					String actual_column = status_ind_col[1];
+					System.out.println(status_column_col[i]);
 					String status_column = status_ind_col[2];
 					if(premium_comp(output.read_data(expected_column),output.read_data(actual_column)))
 					{
@@ -96,15 +109,14 @@ public class app_DTC_getCustomerDetails
 						output.write_data(status_column, "Fail");
 					}
 					
-				}*/
+				}
 			}
 			input.write_data("flag_for_execution", "Completed");
-			//output.write_data("flag_for_execution", "Completed");
+			output.write_data("flag_for_execution", "Completed");
 			input.update_row();
-			//output.update_row();
+			output.update_row();
 			
-		}while(input.move_forward());
-			//&& output.move_forward());
+		}while(input.move_forward()&& output.move_forward());
 		
 		database_operation.close_conn();
 					
@@ -115,7 +127,7 @@ public class app_DTC_getCustomerDetails
 	{
 		
 		boolean status = false;
-		if(expected == null || actual == null)
+		if(expected == null || actual == null ||expected.equals("") || actual.equals(""))
 		{
 			status = false;
 		}
@@ -125,6 +137,9 @@ public class app_DTC_getCustomerDetails
 			actual = actual.replaceAll("\\[\"", "");
 			expected = expected.replaceAll("\"\\]", "");
 			actual = actual.replaceAll("\"\\]", "");
+			expected = expected.replaceAll("\\.[0-9]*", "");
+			actual = actual.replaceAll("\\.[0-9]*", "");
+			
 			System.out.println(actual);
 			System.out.println(expected);
 			if(expected.equals(actual))
