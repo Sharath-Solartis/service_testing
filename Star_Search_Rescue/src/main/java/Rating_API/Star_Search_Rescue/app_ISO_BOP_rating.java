@@ -53,6 +53,7 @@ public class app_ISO_BOP_rating
 		
 		do
 		{
+			System.out.println("check");
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
 				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
@@ -86,7 +87,7 @@ public class app_ISO_BOP_rating
 					
 					System.out.println(actual);
 				}
-				for(int i=0;i<status_column_size;i++)
+			/*	for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
@@ -101,7 +102,7 @@ public class app_ISO_BOP_rating
 						output.write_data(status_column, "Fail");
 					}
 					
-				}
+				}*/
 			}
 			input.write_data("flag_for_execution", "Completed");
 			output.write_data("flag_for_execution", "Completed");

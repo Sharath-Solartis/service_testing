@@ -120,6 +120,9 @@ public class app_DTC_rate
 					String expected_column = status_ind_col[0];
 					String actual_column = status_ind_col[1];
 					String status_column = status_ind_col[2];
+					System.out.println(output.read_data(expected_column));
+					System.out.println(output.read_data(actual_column));
+					
 					if(premium_comp(output.read_data(expected_column),output.read_data(actual_column)))
 					{
 						output.write_data(status_column, "Pass");
@@ -147,7 +150,7 @@ public class app_DTC_rate
 	{
 		
 		boolean status = false;
-		if(expected == null || actual == null ||expected.equals("") || actual.equals(""))
+		if(expected.equals("") || actual.equals(""))
 		{
 			status = false;
 		}
