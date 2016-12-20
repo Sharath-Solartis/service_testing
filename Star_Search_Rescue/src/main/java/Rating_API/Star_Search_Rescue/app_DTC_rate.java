@@ -150,7 +150,7 @@ public class app_DTC_rate
 	{
 		
 		boolean status = false;
-		if(expected.equals("") || actual.equals(""))
+		if(expected == null || actual == null ||expected.equals("") || actual.equals(""))
 		{
 			status = false;
 		}
