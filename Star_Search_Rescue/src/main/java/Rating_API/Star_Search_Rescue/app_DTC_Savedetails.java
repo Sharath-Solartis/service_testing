@@ -73,7 +73,7 @@ public class app_DTC_Savedetails
 				http_handle http = new http_handle(database_operation.config.getProperty("test_url"),"POST");
 				http.add_header("Content-Type", database_operation.config.getProperty("content_type"));
 				http.add_header("Token", database_operation.config.getProperty("token"));
-				http.add_header("EventName", database_operation.config.getProperty("EventName"));//added
+				//http.add_header("EventName", database_operation.config.getProperty("EventName"));//added
 				
 				String input_data = request.Object_to_String();
 				http.send_data(input_data);

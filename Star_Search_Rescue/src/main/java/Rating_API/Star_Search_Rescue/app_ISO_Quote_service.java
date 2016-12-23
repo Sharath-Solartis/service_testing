@@ -16,7 +16,7 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_DTC_rate 
+public class app_ISO_Quote_service 
 {
     //private static FileInputStream configuration1;
 	//public static properties_handle config = null;
@@ -28,7 +28,7 @@ public class app_DTC_rate
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release1/Rating/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/09 ISO/Release_1/Quote/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
@@ -88,36 +88,30 @@ public class app_DTC_rate
 				
 				for(int i=0;i<actual_column_size;i++)
 				{
-					
+					//System.out.println(response.read("..RequestStatus").replaceAll("\\[\"", "").replaceAll("\"\\]", ""));
 					String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-					
+					System.out.println(status_code);
 					if(status_code.equals("SUCCESS"))
 					{
-						String CFARapplicable=(response.read("..IsCFARApplicable").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-						
-						if(CFARapplicable.equals("Yes"))
-						{
-							String CFARerror=(response.read("..CFARErrorMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-							output.write_data("CFARMessage", CFARerror);
-						}
 						String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						output.write_data(actual_column_col[i], actual);
+						//output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
 						output.write_data("Flag_for_execution", status_code);
-						
 					}
 					else
 					{
-						
+						//output.write_data("", response.read(""));
+						//output.write_data("", response.read(""));
+						//output.write_data("", response.read(""));
+						//output.write_data("", response.read(""));
 						
 						String message_code=(response.read("..messageCode").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						System.out.println(message_code);
 						String user_message=(response.read("..UserMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						System.out.println(user_message);
-						
 						output.write_data("Flag_for_execution", "Error response");
 						output.write_data("Message_code", message_code);
 						output.write_data("User_maessage", user_message);
-						
 					}
 				}
 			/*	for(int i=0;i<status_column_size;i++)
