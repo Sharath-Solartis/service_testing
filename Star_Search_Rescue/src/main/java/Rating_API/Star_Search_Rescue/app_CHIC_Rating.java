@@ -13,7 +13,7 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_chic_forms 
+public class app_CHIC_Rating 
 {
     //private static FileInputStream configuration1;
 	
@@ -25,7 +25,7 @@ public class app_chic_forms
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/07 CHIC/Forms/Release1/configuration_file/config_XML.properties");
+				("Q:/Automation Team/1 Projects/07 CHIC/Rating/Release1/configuration_file/config_XML.properties");
 		
 		
 		database_operation.conn_setup();
@@ -40,12 +40,12 @@ public class app_chic_forms
 		input.get_dataobjects(database_operation.config.getProperty("input_query"));
 		output.get_dataobjects(database_operation.config.getProperty("output_query"));
 		//String[] expected_column_col = config.getProperty("expected_column").split(";");
-		//String[] actual_column_col = database_operation.config.getProperty("actual_column").split(";");
+		String[] actual_column_col = database_operation.config.getProperty("actual_column").split(";");
 		String[] input_column_col = database_operation.config.getProperty("input_column").split(";");
-		//String[] status_column_col = database_operation.config.getProperty("status_column").split(";");
-		//int status_column_size = status_column_col.length;
+		String[] status_column_col = database_operation.config.getProperty("status_column").split(";");
+		int status_column_size = status_column_col.length;
 		//int expected_column_size = expected_column_col.length;
-		//int actual_column_size = actual_column_col.length;
+		int actual_column_size = actual_column_col.length;
 		int input_column_size = input_column_col.length;
 		
 		do
@@ -75,13 +75,43 @@ public class app_chic_forms
 				
 				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));  // response location
 				response.String_to_object(response_string);
-				/*for(int i=0;i<actual_column_size;i++)
+				for(int i=0;i<actual_column_size;i++)
 				{
 					System.out.println(actual_column_col[i]+json_elements.read_data(actual_column_col[i]));
-					System.out.println(json_elements.read_data(actual_column_col[i])+actual_column_col[i]+response.read(json_elements.read_data(actual_column_col[i])));
-					output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-				}*/
-			/*	for(int i=0;i<status_column_size;i++)
+					//System.out.println(json_elements.read_data(actual_column_col[i])+actual_column_col[i]+response.read(json_elements.read_data(actual_column_col[i])));
+					
+						
+							if(actual_column_col[i].equals("V1_Individual_PhysDamage_prem_rs") && input.read_data("V1_PhysicalDamage_inluded").equals("Y"))
+							{
+								output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+							}
+							
+						
+						
+							else if(actual_column_col[i].equals("V2_Individual_PhysDamage_prem_rs") && input.read_data("V2_PhysicalDamage_inluded").equals("Y"))
+							{
+								try
+								{
+									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+								}catch(Exception e1)
+								{
+									output.write_data(actual_column_col[i],"Null value");
+								}
+							}
+						
+					
+							else
+							{
+								try
+								{
+									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
+								}catch(Exception e1)
+								{
+									output.write_data(actual_column_col[i],"Null value");
+								}
+							}
+				}
+				for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
@@ -97,26 +127,25 @@ public class app_chic_forms
 						output.write_data(status_column, "Fail");
 					}
 					
-				}*/
+				}
 			}
 			input.write_data("flag_for_execution", "Completed");
-			//output.write_data("flag_for_execution", "Completed");
+			output.write_data("flag_for_execution", "Completed");
 			input.update_row();
-			//output.update_row();
+			output.update_row();
 			
-		}while(input.move_forward());
-		//while(input.move_forward() && output.move_forward());
+		}while(input.move_forward() && output.move_forward());
 		
 		database_operation.close_conn();
 					
     }
     
 	
-	/*private static boolean premium_comp(String expected,String actual)
+	private static boolean premium_comp(String expected,String actual)
 	{
 		
 		boolean status = false;
-		if(expected == null || actual == null)
+		if(expected == null || actual == null ||expected.equals("") || actual.equals(""))
 		{
 			status = false;
 		}
@@ -126,6 +155,9 @@ public class app_chic_forms
 			actual = actual.replaceAll("\\[\"", "");
 			expected = expected.replaceAll("\"\\]", "");
 			actual = actual.replaceAll("\"\\]", "");
+			expected = expected.replaceAll("\\.[0-9]*", "");
+			actual = actual.replaceAll("\\.[0-9]*", "");
+			
 			System.out.println(actual);
 			System.out.println(expected);
 			if(expected.equals(actual))
@@ -138,5 +170,5 @@ public class app_chic_forms
 			}
 		}
 		return status;
-	}*/
+	}
 }

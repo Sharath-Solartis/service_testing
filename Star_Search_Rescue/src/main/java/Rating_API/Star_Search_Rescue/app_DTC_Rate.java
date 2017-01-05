@@ -1,10 +1,13 @@
 package Rating_API.Star_Search_Rescue;
 
 import Supporting_Classes.http_handle;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+
 import org.dom4j.DocumentException;
+
 import Supporting_Classes.database_operation;
 import Supporting_Classes.properties_handle;
 import Supporting_Classes.request_response;
@@ -13,10 +16,10 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_chic_rating 
+public class app_DTC_Rate 
 {
     //private static FileInputStream configuration1;
-	
+	//public static properties_handle config = null;
 	public static request_response sample_input = null;
 	public static request_response request = null;
 	public static request_response response = null;
@@ -25,7 +28,7 @@ public class app_chic_rating
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/07 CHIC/Rating/Release1/configuration_file/config_XML.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release1/Rating/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
@@ -53,7 +56,10 @@ public class app_chic_rating
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
 				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
+			
 				request.String_to_object(sample_input.Object_to_String());
+			
+				
 				for(int i=0;i<input_column_size;i++)
 				{
 					request.write(json_elements.read_data(input_column_col[i]), input.read_data(input_column_col[i]));
@@ -62,62 +68,67 @@ public class app_chic_rating
 				http_handle http = new http_handle(database_operation.config.getProperty("test_url"),"POST");
 				http.add_header("Content-Type", database_operation.config.getProperty("content_type"));
 				http.add_header("Token", database_operation.config.getProperty("token"));
+				http.add_header("EventName", database_operation.config.getProperty("EventName"));//added
+				
 				String input_data = request.Object_to_String();
 				http.send_data(input_data);
 				
 				String response_string = null;
 				try {
 					response_string = http.Receive_data();
+					System.out.println(response_string);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));  // response location
+				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));// response location
+				//System.out.println(response);
 				response.String_to_object(response_string);
+				
 				for(int i=0;i<actual_column_size;i++)
 				{
-					System.out.println(actual_column_col[i]+json_elements.read_data(actual_column_col[i]));
-					//System.out.println(json_elements.read_data(actual_column_col[i])+actual_column_col[i]+response.read(json_elements.read_data(actual_column_col[i])));
 					
-						
-							if(actual_column_col[i].equals("V1_Individual_PhysDamage_prem_rs") && input.read_data("V1_PhysicalDamage_inluded").equals("Y"))
-							{
-								output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-							}
-							
-						
-						
-							else if(actual_column_col[i].equals("V2_Individual_PhysDamage_prem_rs") && input.read_data("V2_PhysicalDamage_inluded").equals("Y"))
-							{
-								try
-								{
-									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-								}catch(Exception e1)
-								{
-									output.write_data(actual_column_col[i],"Null value");
-								}
-							}
-						
+					String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 					
-							else
-							{
-								try
-								{
-									output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-								}catch(Exception e1)
-								{
-									output.write_data(actual_column_col[i],"Null value");
-								}
-							}
+					if(status_code.equals("SUCCESS"))
+					{
+						String CFARapplicable=(response.read("..IsCFARApplicable").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+						
+						if(CFARapplicable.equals("Yes"))
+						{
+							String CFARerror=(response.read("..CFARErrorMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+							output.write_data("CFARMessage", CFARerror);
+						}
+						String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+						output.write_data(actual_column_col[i], actual);
+						output.write_data("Flag_for_execution", status_code);
+						
+					}
+					else
+					{
+						
+						
+						String message_code=(response.read("..messageCode").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+						System.out.println(message_code);
+						String user_message=(response.read("..UserMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+						System.out.println(user_message);
+						
+						output.write_data("Flag_for_execution", "Error response");
+						output.write_data("Message_code", message_code);
+						output.write_data("User_maessage", user_message);
+						
+					}
 				}
-				for(int i=0;i<status_column_size;i++)
+			/*	for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
-					System.out.println(status_column_col[i]);
 					String actual_column = status_ind_col[1];
 					String status_column = status_ind_col[2];
+					System.out.println(output.read_data(expected_column));
+					System.out.println(output.read_data(actual_column));
+					
 					if(premium_comp(output.read_data(expected_column),output.read_data(actual_column)))
 					{
 						output.write_data(status_column, "Pass");
@@ -127,10 +138,10 @@ public class app_chic_rating
 						output.write_data(status_column, "Fail");
 					}
 					
-				}
+				}*/
 			}
 			input.write_data("flag_for_execution", "Completed");
-			output.write_data("flag_for_execution", "Completed");
+			//output.write_data("flag_for_execution", "Completed");
 			input.update_row();
 			output.update_row();
 			
