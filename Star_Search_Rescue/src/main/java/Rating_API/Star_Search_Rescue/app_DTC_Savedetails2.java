@@ -91,11 +91,13 @@ public class app_DTC_Savedetails2
 				
 				for(int i=0;i<input_column_size;i++)
 				{
+					System.out.println(input_column_col[i]);
 					if(!input.read_data(input_column_col[i]).equals(""))
 					{
 						request.write(json_elements.read_data(input_column_col[i]), input.read_data(input_column_col[i]));
-				
+						System.out.println(input_column_col[i]);
 					}
+					
 				}
 				
 				http_handle http = new http_handle(database_operation.config.getProperty("test_url"),"POST");
@@ -162,7 +164,7 @@ public class app_DTC_Savedetails2
 				
 					
 				
-				for(int i=0;i<status_column_size;i++)
+			/*	for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
@@ -177,7 +179,7 @@ public class app_DTC_Savedetails2
 						output.write_data(status_column, "Fail");
 					}
 					
-				}
+				}*/
 			}
 			input.write_data("flag_for_execution", "Completed");
 			output.write_data("flag_for_execution", "Completed");

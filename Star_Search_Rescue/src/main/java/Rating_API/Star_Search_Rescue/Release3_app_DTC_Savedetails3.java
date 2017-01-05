@@ -18,7 +18,7 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_DTC_Savedetails3 
+public class Release3_app_DTC_Savedetails3 
 {
     //private static FileInputStream configuration1;
 	//public static properties_handle config = null;
@@ -69,19 +69,36 @@ public class app_DTC_Savedetails3
 				switch(plan)
 				{
 					case "Annual Plan":
+						
 						        System.out.println("Annual plan");
 						       sample_input = new request_response(database_operation.config.getProperty("sample_request_AnnualPlan"),database_operation.config.getProperty("type"));
 						       System.out.println(sample_input);
 					            break;
 					case "Single Trip": 
+						
 						 System.out.println("Single Trip");
-						       sample_input = new request_response(database_operation.config.getProperty("sample_request_SingleTrip"),database_operation.config.getProperty("type"));
-			                   break;
+						 String plan_name=input.read_data("Plan_name");
+						      if(plan_name.equals("Air Ticket Protector (Domestic)"))
+						      {
+						    	  System.out.println("atp");
+						       sample_input = new request_response(database_operation.config.getProperty("sample_request_SingleTrip1"),database_operation.config.getProperty("type"));
+						      }
+						      else
+						      {
+						    	  System.out.println("Premiur_CP");
+						    	 sample_input = new request_response(database_operation.config.getProperty("sample_request_SingleTrip2"),database_operation.config.getProperty("type"));  
+						      }
+						      
+						      break;
+			                   
 					case "Renter's Collision":
+						
 						System.out.println("Renter's Collision");
 						      sample_input = new request_response(database_operation.config.getProperty("sample_request_RenterCollision"),database_operation.config.getProperty("type"));
 		                      break;
+		                      
 		             default: 
+		            	 
 		            	 System.out.println("no request");
 				}
 				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
@@ -136,6 +153,7 @@ public class app_DTC_Savedetails3
 						output.write_data(actual_column_col[i], actual);
 						//output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
 						output.write_data("Flag_for_execution", status_code);
+						input.write_data("Flag_for_execution", status_code);
 						}catch(PathNotFoundException e)
 						{
 							output.write_data(actual_column_col[i], "Path not Found");
@@ -153,16 +171,17 @@ public class app_DTC_Savedetails3
 						String user_message=(response.read("..UserMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						System.out.println(user_message);
 						output.write_data("Flag_for_execution", "Error response");
+						input.write_data("Flag_for_execution", "Error response");
 						output.write_data("Message_code", message_code);
 						output.write_data("User_maessage", user_message);
 					}
 				}
 				
-			
+				//output.write_data("flag_for_execution", "rerun_completed");
 				
 					
 				
-				for(int i=0;i<status_column_size;i++)
+			/*	for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
@@ -177,10 +196,10 @@ public class app_DTC_Savedetails3
 						output.write_data(status_column, "Fail");
 					}
 					
-				}
+				}*/
 			}
-			input.write_data("flag_for_execution", "Completed");
-			output.write_data("flag_for_execution", "Completed");
+			//input.write_data("flag_for_execution", "Completed");
+			//output.write_data("flag_for_execution", "Completed");
 			input.update_row();
 			output.update_row();
 			
