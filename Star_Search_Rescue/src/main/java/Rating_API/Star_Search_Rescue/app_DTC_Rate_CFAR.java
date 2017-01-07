@@ -18,29 +18,25 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class Release3_app_DTC_Savedetails2 
+public class app_DTC_Rate_CFAR 
 {
     //private static FileInputStream configuration1;
 	//public static properties_handle config = null;
 	public static request_response sample_input = null;
 	public static request_response request = null;
 	public static request_response response = null;
-	public static request_response sample_input1 = null;
-	public static request_response request1 = null;
-	public static request_response response1 = null;
-	
 	public static void main( String[] args ) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, IOException, DocumentException
 	
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release3/SaveCustomer/configuration_file/config_json_save2.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release3/Rating_CFAR/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
     	System.setProperty("jsse.enableSNIExtension", "false");
 		
-		//sample_input = new request_response(database_operation.config.getProperty("sample_request"),database_operation.config.getProperty("type"));//added
+		sample_input = new request_response(database_operation.config.getProperty("sample_request"),database_operation.config.getProperty("type"));//added
 		
 		database_operation input = new database_operation();
 		database_operation output = new database_operation();
@@ -54,7 +50,6 @@ public class Release3_app_DTC_Savedetails2
 		String[] status_column_col = database_operation.config.getProperty("status_column").split(";");
 		int status_column_size = status_column_col.length;
 		//int expected_column_size = expected_column_col.length;
-		
 		int actual_column_size = actual_column_col.length;
 		int input_column_size = input_column_col.length;
 		
@@ -62,30 +57,6 @@ public class Release3_app_DTC_Savedetails2
 		{
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
-				
-				
-				String plan=input.read_data("Plan_type");
-				System.out.println(plan);
-				switch(plan)
-				{
-					case "Annual Plan":
-						        System.out.println("Annual plan");
-						       sample_input = new request_response(database_operation.config.getProperty("sample_request_AnnualPlan"),database_operation.config.getProperty("type"));
-						       System.out.println(sample_input);
-					            break;
-					case "Single Trip": 
-						//String plan_name=input.read_data("plan_name");
-						 //System.out.println("plan_name");
-						 
-						       sample_input = new request_response(database_operation.config.getProperty("sample_request_SingleTrip"),database_operation.config.getProperty("type"));
-			                   break;
-					case "Renter's Collision":
-						System.out.println("Renter's Collision");
-						      sample_input = new request_response(database_operation.config.getProperty("sample_request_RenterCollision"),database_operation.config.getProperty("type"));
-		                      break;
-		             default: 
-		            	 System.out.println("no request");
-				}
 				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
 			
 				request.String_to_object(sample_input.Object_to_String());
@@ -93,13 +64,7 @@ public class Release3_app_DTC_Savedetails2
 				
 				for(int i=0;i<input_column_size;i++)
 				{
-					//System.out.println(input_column_col[i]);
-					if(!input.read_data(input_column_col[i]).equals(""))
-					{
-						request.write(json_elements.read_data(input_column_col[i]), input.read_data(input_column_col[i]));
-						//System.out.println(input_column_col[i]);
-					}
-					
+					request.write(json_elements.read_data(input_column_col[i]), input.read_data(input_column_col[i]));
 				}
 				
 				http_handle http = new http_handle(database_operation.config.getProperty("test_url"),"POST");
@@ -120,61 +85,52 @@ public class Release3_app_DTC_Savedetails2
 				}
 				
 				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));// response location
-				System.out.println(response);
+				//System.out.println(response);
 				response.String_to_object(response_string);
-				String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-				System.out.println("status"+status_code);
 				
 				for(int i=0;i<actual_column_size;i++)
 				{
-					//System.out.println(response.read("..RequestStatus").replaceAll("\\[\"", "").replaceAll("\"\\]", ""));
-					//String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-					//System.out.println(status_code);
+					
+					String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+					
 					if(status_code.equals("SUCCESS"))
 					{
 						try
 						{
 						
-							String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-						
+						String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						output.write_data(actual_column_col[i], actual);
-						//output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
-						
+						output.write_data("Flag_for_execution", status_code);
 						}catch(PathNotFoundException e)
 						{
 							output.write_data(actual_column_col[i], "Path not Found");
 						}
+						
 					}
 					else
 					{
-						//output.write_data("", response.read(""));
-						//output.write_data("", response.read(""));
-						//output.write_data("", response.read(""));
-						//output.write_data("", response.read(""));
+						
 						
 						String message_code=(response.read("..messageCode").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						System.out.println(message_code);
 						String user_message=(response.read("..UserMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						System.out.println(user_message);
-						output.write_data("Flag_for_execution", "Error response");
-						input.write_data("Flag_for_execution", "Error response");
 						
-						output.write_data("Message_code", message_code);
-						output.write_data("User_maessage", user_message);
+						output.write_data("Flag_for_execution", "Error response");
+						//output.write_data("Message_code", message_code);
+						//output.write_data("User_maessage", user_message);
+						
 					}
 				}
-				
-				output.write_data("Flag_for_execution", status_code);
-				input.write_data("Flag_for_execution", status_code);
-				
-					
-				
-			/*	for(int i=0;i<status_column_size;i++)
+			for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
 					String actual_column = status_ind_col[1];
 					String status_column = status_ind_col[2];
+					System.out.println(output.read_data(expected_column));
+					System.out.println(output.read_data(actual_column));
+					
 					if(premium_comp(output.read_data(expected_column),output.read_data(actual_column)))
 					{
 						output.write_data(status_column, "Pass");
@@ -184,10 +140,9 @@ public class Release3_app_DTC_Savedetails2
 						output.write_data(status_column, "Fail");
 					}
 					
-				}*/
-				//output.write_data("flag_for_execution", "rerun_completed");
+				}
 			}
-			//input.write_data("flag_for_execution", "Completed");
+			input.write_data("flag_for_execution", "Completed");
 			//output.write_data("flag_for_execution", "Completed");
 			input.update_row();
 			output.update_row();
@@ -216,8 +171,8 @@ public class Release3_app_DTC_Savedetails2
 			expected = expected.replaceAll("\\.[0-9]*", "");
 			actual = actual.replaceAll("\\.[0-9]*", "");
 			
-			System.out.println(actual);
-			System.out.println(expected);
+			//System.out.println(actual);
+			//System.out.println(expected);
 			if(expected.equals(actual))
 			{
 				status = true;
