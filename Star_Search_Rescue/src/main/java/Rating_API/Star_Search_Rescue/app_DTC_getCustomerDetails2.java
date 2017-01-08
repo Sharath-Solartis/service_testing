@@ -28,7 +28,7 @@ public class app_DTC_getCustomerDetails2
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release2/GetcustomerDetails/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release3/GetcustomerDetails/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
@@ -55,7 +55,7 @@ public class app_DTC_getCustomerDetails2
 		{
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
-				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
+				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request_"+input.read_data("StateCode1"),database_operation.config.getProperty("type"));
 				request.String_to_object(sample_input.Object_to_String());
 				for(int i=0;i<input_column_size;i++)
 				{
@@ -78,7 +78,7 @@ public class app_DTC_getCustomerDetails2
 					e.printStackTrace();
 				}
 				
-				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));  // response location
+				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response_"+input.read_data("StateCode1"),database_operation.config.getProperty("type"));  // response location
 				response.String_to_object(response_string);
 			/*	for(int i=0;i<actual_column_size;i++)
 				{

@@ -101,7 +101,7 @@ public class Release3_app_DTC_Savedetails3
 		            	 
 		            	 System.out.println("no request");
 				}
-				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
+				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request_"+input.read_data("State_code")+"_"+input.read_data("Plan_type")+"_"+input.read_data("Plan_name"),database_operation.config.getProperty("type"));
 			
 				request.String_to_object(sample_input.Object_to_String());
 			
@@ -132,7 +132,7 @@ public class Release3_app_DTC_Savedetails3
 					e.printStackTrace();
 				}
 				
-				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));// response location
+				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response_"+input.read_data("State_code")+"_"+input.read_data("Plan_type")+"_"+input.read_data("Plan_name"),database_operation.config.getProperty("type"));// response location
 				System.out.println(response);
 				response.String_to_object(response_string);
 				String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
@@ -172,8 +172,8 @@ public class Release3_app_DTC_Savedetails3
 						System.out.println(user_message);
 						output.write_data("Flag_for_execution", "Error response");
 						input.write_data("Flag_for_execution", "Error response");
-						output.write_data("Message_code", message_code);
-						output.write_data("User_maessage", user_message);
+						//output.write_data("Message_code", message_code);
+						//output.write_data("User_maessage", user_message);
 					}
 				}
 				
@@ -199,7 +199,7 @@ public class Release3_app_DTC_Savedetails3
 				}*/
 			}
 			//input.write_data("flag_for_execution", "Completed");
-			//output.write_data("flag_for_execution", "Completed");
+			output.write_data("flag_for_execution", "Completed");
 			input.update_row();
 			output.update_row();
 			

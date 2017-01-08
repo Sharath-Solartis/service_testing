@@ -55,7 +55,7 @@ public class app_DTC_Pay_and_issue
 		{
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
-				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
+				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request_"+input.read_data("PayerState"),database_operation.config.getProperty("type"));
 			
 				request.String_to_object(sample_input.Object_to_String());
 			
@@ -83,7 +83,7 @@ public class app_DTC_Pay_and_issue
 					e.printStackTrace();
 				}
 				
-				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));// response location
+				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response_"+input.read_data("PayerState"),database_operation.config.getProperty("type"));// response location
 				//System.out.println(response);
 				response.String_to_object(response_string);
 				String Payment_status=(response.read("..PaymentStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");

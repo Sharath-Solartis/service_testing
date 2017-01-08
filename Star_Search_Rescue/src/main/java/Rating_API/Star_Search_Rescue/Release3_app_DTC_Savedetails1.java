@@ -82,7 +82,7 @@ public class Release3_app_DTC_Savedetails1
 		             default: 
 		            	 System.out.println("no request");
 				}
-				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
+				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request_"+input.read_data("State_code")+"_"+input.read_data("Plan_type"),database_operation.config.getProperty("type"));
 			
 				request.String_to_object(sample_input.Object_to_String());
 			
@@ -112,7 +112,7 @@ public class Release3_app_DTC_Savedetails1
 					e.printStackTrace();
 				}
 				
-				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));// response location
+				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response_"+input.read_data("State_code")+"_"+input.read_data("Plan_type"),database_operation.config.getProperty("type"));// response location
 				System.out.println(response);
 				response.String_to_object(response_string);
 				String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
