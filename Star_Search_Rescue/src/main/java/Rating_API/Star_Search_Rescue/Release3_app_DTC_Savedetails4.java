@@ -137,9 +137,9 @@ public class Release3_app_DTC_Savedetails4
 						System.out.println(message_code);
 						String user_message=(response.read("..UserMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						System.out.println(user_message);
-						output.write_data("Flag_for_execution", "Error response");
-						output.write_data("Message_code", message_code);
-						output.write_data("User_maessage", user_message);
+						input.write_data("Flag_for_execution", "Error response");
+						//output.write_data("Message_code", message_code);
+						//output.write_data("User_maessage", user_message);
 					}
 				}
 				

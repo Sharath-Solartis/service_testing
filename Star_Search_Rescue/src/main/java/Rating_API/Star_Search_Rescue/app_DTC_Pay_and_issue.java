@@ -8,6 +8,8 @@ import java.sql.SQLException;
 
 import org.dom4j.DocumentException;
 
+import com.jayway.jsonpath.PathNotFoundException;
+
 import Supporting_Classes.database_operation;
 import Supporting_Classes.properties_handle;
 import Supporting_Classes.request_response;
@@ -86,48 +88,31 @@ public class app_DTC_Pay_and_issue
 				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response_"+input.read_data("PayerState"),database_operation.config.getProperty("type"));// response location
 				//System.out.println(response);
 				response.String_to_object(response_string);
-				String Payment_status=(response.read("..PaymentStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+			/*	String Payment_status=(response.read("..PaymentStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 				if(Payment_status.equals(""))
 				{
 					String message=(response.read("..message").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 					input.write_data("Flag_for_execution", message);
 				}
-				input.write_data("Flag_for_execution", Payment_status+"rerun");
+				input.write_data("Flag_for_execution", Payment_status+"rerun");*/
 				
-			/*	for(int i=0;i<actual_column_size;i++)
+			for(int i=0;i<actual_column_size;i++)
 				{
 					
 					String status_code=(response.read("..RequestStatus").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 					
-					if(status_code.equals("SUCCESS"))
-					{
-						String CFARapplicable=(response.read("..IsCFARApplicable").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-						
-						if(CFARapplicable.equals("Yes"))
-						{
-							String CFARerror=(response.read("..CFARErrorMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-							output.write_data("CFARMessage", CFARerror);
-						}
+					    try
+					    {
 						String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
 						output.write_data(actual_column_col[i], actual);
 						output.write_data("Flag_for_execution", status_code);
+					    }catch(PathNotFoundException e)
+						{
+							output.write_data(actual_column_col[i], "Path not Found");
+						}
 						
-					}
-					else
-					{
-						
-						
-						String message_code=(response.read("..messageCode").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-						System.out.println(message_code);
-						String user_message=(response.read("..UserMessage").replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
-						System.out.println(user_message);
-						
-						output.write_data("Flag_for_execution", "Error response");
-						output.write_data("Message_code", message_code);
-						output.write_data("User_maessage", user_message);
-						
-					}
-				}*/
+					
+				}
 			/*	for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
