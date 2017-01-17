@@ -34,7 +34,7 @@ public class app_DTC_Savedetails2
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release2/SaveCustomer/configuration_file/config_json_save2.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release3/SaveCustomer/configuration_file/config_json_save2.properties");
 		
 		
 		database_operation.conn_setup();
@@ -47,6 +47,7 @@ public class app_DTC_Savedetails2
 		database_operation json_elements = new database_operation();
 		json_elements.get_dataobjects(database_operation.config.getProperty("json_query"));
 		input.get_dataobjects(database_operation.config.getProperty("input_query"));
+		System.out.println(database_operation.config.getProperty("input_query"));
 		output.get_dataobjects(database_operation.config.getProperty("output_query"));
 		//String[] expected_column_col = config.getProperty("expected_column").split(";");
 		String[] actual_column_col = database_operation.config.getProperty("actual_column").split(";");
@@ -60,6 +61,7 @@ public class app_DTC_Savedetails2
 		
 		do
 		{
+			//System.out.println(input.read_data("flag_for_execution"));
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
 				

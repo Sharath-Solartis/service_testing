@@ -34,7 +34,7 @@ public class app_DTC_Savedetails4
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release2/SaveCustomer/configuration_file/config_json_save4.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release3/SaveCustomer/configuration_file/config_json_save4.properties");
 		
 		
 		database_operation.conn_setup();
@@ -65,7 +65,28 @@ public class app_DTC_Savedetails4
 				
 				
 			  sample_input = new request_response(database_operation.config.getProperty("sample_request_AnnualPlan"),database_operation.config.getProperty("type"));
-						   
+			 /* String plan=input.read_data("Plan_type");
+				System.out.println(plan);
+				switch(plan)
+				{
+					case "Annual Plan":
+						        System.out.println("Annual plan");
+						       sample_input = new request_response(database_operation.config.getProperty("sample_request_AnnualPlan"),database_operation.config.getProperty("type"));
+						       System.out.println(sample_input);
+					            break;
+					case "Single Trip": 
+						 System.out.println("Single Trip");
+						       sample_input = new request_response(database_operation.config.getProperty("sample_request_SingleTrip"),database_operation.config.getProperty("type"));
+			                   break;
+					case "Renter's Collision":
+						System.out.println("Renter's Collision");
+						      sample_input = new request_response(database_operation.config.getProperty("sample_request_RenterCollision"),database_operation.config.getProperty("type"));
+		                      break;
+		             default: 
+		            	 System.out.println("no request");
+				}
+				*/
+			  
 				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
 			
 				request.String_to_object(sample_input.Object_to_String());
