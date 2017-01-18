@@ -62,9 +62,27 @@ public class Cubareason_Release3_app_DTC_Savedetails4
 		{
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
+				String plan=input.read_data("Plan_name");
+				System.out.println(plan);
+				switch(plan)
+				{
+					case "Single Trip":
+						        System.out.println("tripplan");
+						       sample_input = new request_response(database_operation.config.getProperty("sample_request_otherplans"),database_operation.config.getProperty("type"));
+						       System.out.println(sample_input);
+					            break;
+					case "Renter's Collision": 
+						//String plan_name=input.read_data("plan_name");
+						 //System.out.println("plan_name");
+						 System.out.println("rc");
+						       sample_input = new request_response(database_operation.config.getProperty("sample_request_RC"),database_operation.config.getProperty("type"));
+			                   break;
+					default:
+						      System.out.println("no request");
+						      break;
+				}
 				
-				
-			  sample_input = new request_response(database_operation.config.getProperty("sample_request_RC"),database_operation.config.getProperty("type"));
+			  //sample_input = new request_response(database_operation.config.getProperty("sample_request_RC"),database_operation.config.getProperty("type"));
 						   
 				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request_"+input.read_data("StateCode1"),database_operation.config.getProperty("type"));
 			

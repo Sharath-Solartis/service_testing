@@ -77,17 +77,10 @@ public class Cubareason_Release3_app_DTC_Savedetails3
 					case "Single Trip": 
 						
 						 System.out.println("Single Trip");
-						 String plan_name=input.read_data("Plan_name");
-						      if(plan_name.equals("Air Ticket Protector (Domestic)"))
-						      {
-						    	  System.out.println("atp");
+						 //String plan_name=input.read_data("Plan_name");
+						     
 						       sample_input = new request_response(database_operation.config.getProperty("sample_request_SingleTrip1"),database_operation.config.getProperty("type"));
-						      }
-						      else
-						      {
-						    	  System.out.println("Premiur_CP");
-						    	 sample_input = new request_response(database_operation.config.getProperty("sample_request_SingleTrip2"),database_operation.config.getProperty("type"));  
-						      }
+						     
 						      
 						      break;
 			                   

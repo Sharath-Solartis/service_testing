@@ -165,8 +165,8 @@ public class Cubareason_Release3_app_DTC_Savedetails2
 						output.write_data("Flag_for_execution", "Error response");
 						input.write_data("Flag_for_execution", "Error response");
 						
-						output.write_data("Message_code", message_code);
-						output.write_data("User_maessage", user_message);
+						//output.write_data("Message_code", message_code);
+						//output.write_data("User_maessage", user_message);
 					}
 				}
 				
