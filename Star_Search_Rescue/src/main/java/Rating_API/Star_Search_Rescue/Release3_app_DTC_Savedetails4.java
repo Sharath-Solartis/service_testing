@@ -64,7 +64,7 @@ public class Release3_app_DTC_Savedetails4
 			{
 				
 				
-			  sample_input = new request_response(database_operation.config.getProperty("sample_request_RC"),database_operation.config.getProperty("type"));
+			  sample_input = new request_response(database_operation.config.getProperty("sample_request_otherplans"),database_operation.config.getProperty("type"));
 						   
 				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request_"+input.read_data("StateCode1"),database_operation.config.getProperty("type"));
 			

@@ -78,7 +78,7 @@ public class Release3_app_DTC_Savedetails3
 						
 						 System.out.println("Single Trip");
 						 String plan_name=input.read_data("Plan_name");
-						      if(plan_name.equals("Air Ticket Protector (Domestic)"))
+						      if(plan_name.equals("Air Ticket Protector "))
 						      {
 						    	  System.out.println("atp");
 						       sample_input = new request_response(database_operation.config.getProperty("sample_request_SingleTrip1"),database_operation.config.getProperty("type"));
