@@ -13,7 +13,7 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_ssr_Issue_sertificate 
+public class app_StarSearchRescue_Issue_Certificate 
 {
     //private static FileInputStream configuration1;
 	//public static properties_handle config = null;
