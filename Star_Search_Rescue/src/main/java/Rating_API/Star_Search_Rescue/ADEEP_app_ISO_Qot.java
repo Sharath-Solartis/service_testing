@@ -16,7 +16,7 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_ISO_Form_service 
+public class ADEEP_app_ISO_Qot 
 {
     //private static FileInputStream configuration1;
 	//public static properties_handle config = null;
@@ -28,7 +28,7 @@ public class app_ISO_Form_service
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/09 ISO/Release_1/Forms/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/09 ISO/Release_1/Quote/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();

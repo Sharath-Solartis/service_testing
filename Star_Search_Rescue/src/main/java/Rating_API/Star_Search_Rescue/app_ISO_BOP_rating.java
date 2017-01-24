@@ -28,7 +28,7 @@ public class app_ISO_BOP_rating
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/09 ISO/Release_1/Rating/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/09 ISO/Release_5/Rating/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
