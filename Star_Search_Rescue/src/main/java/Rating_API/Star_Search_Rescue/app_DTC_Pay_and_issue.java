@@ -30,7 +30,7 @@ public class app_DTC_Pay_and_issue
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release3/Pay and issue/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release4/Pay and issue/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();

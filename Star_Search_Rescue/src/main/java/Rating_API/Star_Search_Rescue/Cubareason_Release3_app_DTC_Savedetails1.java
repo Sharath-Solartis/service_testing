@@ -32,7 +32,7 @@ public class Cubareason_Release3_app_DTC_Savedetails1
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release3/SaveCustomer - Cuba reason/configuration_file/config_json_save1.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release4/SaveCustomer/configuration_file/config_json_save1.properties");
 		
 		
 		database_operation.conn_setup();
