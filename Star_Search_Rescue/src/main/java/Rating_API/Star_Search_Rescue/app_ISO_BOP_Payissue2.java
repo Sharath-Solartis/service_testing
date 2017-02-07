@@ -28,7 +28,7 @@ public class app_ISO_BOP_Payissue2
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/09 ISO/Release_1/Payissue/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/09 ISO/Release_6/Payissue/configuration_file/config_json.properties");
 		         
 		database_operation.conn_setup();
     	System.setProperty("jsse.enableSNIExtension", "false");
