@@ -7,21 +7,37 @@ import javax.swing.JLabel;
 //import java.awt.BorderLayout;
 //import javax.swing.JPanel;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
+import Supporting_Classes.CustomOutputStream;
 import Supporting_Classes.database_operation;
 import Supporting_Classes.properties_handle;
 //import sun.security.krb5.Config;
 
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
-import javax.swing.JScrollBar;
+//import javax.swing.JScrollBar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.sql.SQLException;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.CompoundBorder;
+
+import org.dom4j.DocumentException;
+
+//import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
+
+//import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
+
+import java.awt.Color;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class Service_UI {
 
@@ -37,7 +53,11 @@ public class Service_UI {
 	private String API_Selected = null;
 	private JComboBox<String> cmb_API;
 	private JTextField txt_content_type;
-
+	//private JFileChooser request_file_location;
+	private JTextArea print_console;
+	private PrintStream printStream;
+	
+	private JScrollPane console_scroll;
 	/**
 	 * Launch the application.
 	 */
@@ -90,6 +110,8 @@ public class Service_UI {
 		
 		enable_text_sample_request();
 		
+		enable_print_console();
+		
 		enable_button_runapi();
 		
 		enable_progress_check();
@@ -102,13 +124,42 @@ public class Service_UI {
 		
 		enable_combo_API();
 				
-				
+		//enable_file_chooser();		
 				
 				
 			
 			
 		
 	}
+
+	private void enable_print_console() 
+	{
+		print_console = new JTextArea();
+		//print_console.setBounds(44, 384, 636, 124);
+		//frame.getContentPane().add(print_console);
+		
+		print_console.setVisible(true);
+		printStream = new PrintStream(new CustomOutputStream(print_console));
+		System.setOut(printStream);
+		System.setErr(printStream);
+		//frame.getContentPane().add(print_console);
+		console_scroll = new JScrollPane(print_console,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		console_scroll.setBounds(44, 384, 636, 134);
+		frame.getContentPane().add(console_scroll);
+	
+		
+	}
+
+	/*private void enable_file_chooser() 
+	{
+		// TODO Auto-generated method stub
+		request_file_location = new JFileChooser("Browse File");
+		request_file_location.setBackground(Color.GREEN);
+		request_file_location.setBorder(new CompoundBorder());
+		request_file_location.setBounds(351, 58, 322, 196);
+		//request_file_location.setFileFilter(filter);
+		frame.getContentPane().add(request_file_location);
+	}*/
 
 	private void enable_all_labels() 
 	{
@@ -118,7 +169,7 @@ public class Service_UI {
 		frame.getContentPane().add(lbl_API_message);
 		
 		JLabel lblNewLabel = new JLabel("URL");
-		lblNewLabel.setBounds(42, 58, 101, 14);
+		lblNewLabel.setBounds(44, 58, 101, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("DB_name");
@@ -158,10 +209,6 @@ public class Service_UI {
 
 	private void enable_scrollbar() 
 	{
-		// TODO Auto-generated method stub
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(683, 11, 17, 589);
-		frame.getContentPane().add(scrollBar);
 		
 	}
 
@@ -192,17 +239,74 @@ public class Service_UI {
 			@Override
 		public void mouseClicked(MouseEvent e) 
 		{
-				String API_to_test = cmb_API.getSelectedItem().toString();
-				switch(API_to_test)
-				{
-				case ""
-				}
+				//if(validation_correct())
+				//{
+					String API_to_test = cmb_API.getSelectedItem().toString();
+					switch(API_to_test)
+					{
+						case "Preview PDF":	System.out.println("Mouse Clicked");
+										database_operation.config.setProperty("test_url", txt_url.getText());
+										database_operation.config.setProperty("db_url", txt_dbname.getText());
+										database_operation.config.setProperty("input_table", txt_input_table.getText());
+										database_operation.config.setProperty("input_query","Select * from " + txt_input_table.getText());
+										database_operation.config.setProperty("output_table", txt_outputtable.getText());
+										database_operation.config.setProperty("output_query", "Select * from " + txt_outputtable.getText());
+										database_operation.config.setProperty("json_table", txt_json_table.getText());
+										database_operation.config.setProperty("json_query", "Select * from " + txt_json_table.getText());
+										
+										database_operation.config.setProperty("request_location", txt_request_location.getText());
+										database_operation.config.setProperty("response_location", txt_response_location.getText());
+										database_operation.config.store();
+										
+											
+												try {
+												app_DTC_PreviewPDF.main(new String[5]);
+												} catch (ClassNotFoundException | SQLException | IOException | DocumentException e1) {
+													// TODO Auto-generated catch block
+													System.out.print(e1.getMessage());
+												}
+											
+										
+										
+										
+										break;
+					
+					}
+				//}
+				//else
+				//{
+					//System.out.println("values cant be empty");
+				//}
 					
 		}
+
+			
 		});
 		btnRunApi.setBounds(591, 548, 89, 23);
 		frame.getContentPane().add(btnRunApi);
 		
+	}
+
+	protected boolean validation_correct() 
+	{
+		// TODO Auto-generated method stub
+		boolean flag = true;
+		if(txt_sample_request.getText().equals(""))
+		{
+			flag = false;
+		}
+		
+		if(txt_sample_request.getText().equals(""))
+		{
+			flag = false;
+		}
+		
+		if(txt_sample_request.getText().equals(""))
+		{
+			flag = false;
+		}
+		
+		return flag;
 	}
 
 	private void enable_button_testconnection() 
@@ -297,9 +401,11 @@ public class Service_UI {
 				switch(API_Selected)
 				{
 				case "Preview PDF" : database_operation.config = new properties_handle
-						("Q:/Automation Team/1 Projects/08 DTC/Release3/PreviewPDF/configuration_file/config_json.properties");
+						("Q:/Automation Team/1 Projects/08 DTC/Release3/PreviewPDF/configuration_file/config_json_serviceUI.properties");
 						System.out.println(database_operation.config.getProperty("input_query"));
 						txt_url.setText(database_operation.config.getProperty("db_url"));
+						
+						
 						break;
 				case "Select_Item" : txt_url.setText("API not Selected");
 								break;
@@ -311,6 +417,12 @@ public class Service_UI {
 		});
 		cmb_API.setBounds(181, 27, 126, 20);
 		frame.getContentPane().add(cmb_API);
+		{
+			
+		}
+		
+	
+		
 		cmb_API.addItem("Select");
 		cmb_API.addItem("Preview PDF");
 		cmb_API.addItem("Rate API");
@@ -322,13 +434,25 @@ public class Service_UI {
 				switch(API_Selected)
 				{
 				case "Select" : txt_url.setText("  ");
-										txt_dbname.setText("  ");
+								txt_dbname.setText("  ");
+								txt_input_table.setText(" ");
+								txt_outputtable.setText(" ");
+								txt_json_table.setText(" ");
+								txt_request_location.setText(" ");
+								txt_response_location.setText(" ");
+								
 							break;
 				case "Preview PDF" : database_operation.config = new properties_handle
-						("Q:/Automation Team/1 Projects/08 DTC/Release3/PreviewPDF/configuration_file/config_json.properties");
+						("Q:/Automation Team/1 Projects/08 DTC/Release3/PreviewPDF/configuration_file/config_json_serviceUI.properties");
 						System.out.println(database_operation.config.getProperty("input_query"));
 						txt_url.setText(database_operation.config.getProperty("test_url"));
 						txt_dbname.setText(database_operation.config.getProperty("db_url"));
+						txt_input_table.setText(database_operation.config.getProperty("input_table"));
+						txt_outputtable.setText(database_operation.config.getProperty("output_table"));
+						txt_json_table.setText(database_operation.config.getProperty("json_table"));
+						txt_request_location.setText(database_operation.config.getProperty("request_location"));
+						txt_response_location.setText(database_operation.config.getProperty("response_location"));
+						
 						break;
 						
 				case "Rate API" : database_operation.config = new properties_handle

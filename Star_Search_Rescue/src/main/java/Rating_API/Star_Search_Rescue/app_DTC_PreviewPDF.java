@@ -26,9 +26,9 @@ public class app_DTC_PreviewPDF
 	public static void main( String[] args ) throws SQLException, ClassNotFoundException, UnsupportedEncodingException, IOException, DocumentException
 	
     {
-        //System.out.println( "Hello World!" );
+       
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release3/PreviewPDF/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release3/PreviewPDF/configuration_file/config_json_ServiceUI.properties");
 		
 		
 		database_operation.conn_setup();
@@ -40,8 +40,10 @@ public class app_DTC_PreviewPDF
 		database_operation output = new database_operation();
 		database_operation json_elements = new database_operation();
 		json_elements.get_dataobjects(database_operation.config.getProperty("json_query"));
+		 System.out.println( "Hello World!" );
 		input.get_dataobjects(database_operation.config.getProperty("input_query"));
 		output.get_dataobjects(database_operation.config.getProperty("output_query"));
+		 System.out.println( "Hello World!" );
 		//String[] expected_column_col = config.getProperty("expected_column").split(";");
 		String[] actual_column_col = database_operation.config.getProperty("actual_column").split(";");
 		String[] input_column_col = database_operation.config.getProperty("input_column").split(";");
@@ -123,7 +125,7 @@ public class app_DTC_PreviewPDF
 		}while(input.move_forward() && output.move_forward());
 		
 		database_operation.close_conn();
-					
+		System.out.println("Completed");			
     }
     
 	
