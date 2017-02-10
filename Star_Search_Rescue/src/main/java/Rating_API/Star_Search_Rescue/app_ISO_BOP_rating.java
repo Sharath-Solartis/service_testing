@@ -28,7 +28,7 @@ public class app_ISO_BOP_rating
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/09 ISO/Release_5/Rating/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/09 ISO/Release_7/Rating/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
@@ -87,7 +87,7 @@ public class app_ISO_BOP_rating
 					
 					System.out.println(actual);
 				}
-			/*	for(int i=0;i<status_column_size;i++)
+			for(int i=0;i<status_column_size;i++)
 				{
 					String[] status_ind_col = status_column_col[i].split("-");
 					String expected_column = status_ind_col[0];
@@ -102,7 +102,7 @@ public class app_ISO_BOP_rating
 						output.write_data(status_column, "Fail");
 					}
 					
-				}*/
+				}
 			}
 			input.write_data("flag_for_execution", "Completed");
 			output.write_data("flag_for_execution", "Completed");
