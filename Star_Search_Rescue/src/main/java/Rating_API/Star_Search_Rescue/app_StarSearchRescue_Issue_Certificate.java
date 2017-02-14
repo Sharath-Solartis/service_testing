@@ -25,7 +25,7 @@ public class app_StarSearchRescue_Issue_Certificate
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/06 Star Search_rescue/Search_n_Rescue/program_doc/Release_1/Rating/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/06 Star Search_rescue/Release_3/Rating/configuration_file/config_json.properties");
 		
 		
 		database_operation.conn_setup();
@@ -52,7 +52,7 @@ public class app_StarSearchRescue_Issue_Certificate
 		{
 			if(input.read_data("flag_for_execution").equals("Y"))
 			{
-				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("testdata")+"_request",database_operation.config.getProperty("type"));
+				request = new request_response(database_operation.config.getProperty("request_location")+input.read_data("Test_case_id")+"_request",database_operation.config.getProperty("type"));
 				request.String_to_object(sample_input.Object_to_String());
 				for(int i=0;i<input_column_size;i++)
 				{
@@ -62,6 +62,7 @@ public class app_StarSearchRescue_Issue_Certificate
 				http_handle http = new http_handle(database_operation.config.getProperty("test_url"),"POST");
 				http.add_header("Content-Type", database_operation.config.getProperty("content_type"));
 				http.add_header("Token", database_operation.config.getProperty("token"));
+				http.add_header("EventName", database_operation.config.getProperty("EventName"));
 				String input_data = request.Object_to_String();
 				http.send_data(input_data);
 				
@@ -73,9 +74,9 @@ public class app_StarSearchRescue_Issue_Certificate
 					e.printStackTrace();
 				}
 				
-				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("testdata")+"_response",database_operation.config.getProperty("type"));  // response location
+				response = new request_response(database_operation.config.getProperty("response_location")+input.read_data("Test_case_id")+"_response",database_operation.config.getProperty("type"));  // response location
 				response.String_to_object(response_string);
-				for(int i=0;i<actual_column_size;i++)
+			/*	for(int i=0;i<actual_column_size;i++)
 				{
 					output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
 				}
@@ -94,14 +95,15 @@ public class app_StarSearchRescue_Issue_Certificate
 						output.write_data(status_column, "Fail");
 					}
 					
-				}
+				} */
 			}
 			input.write_data("flag_for_execution", "Completed");
-			output.write_data("flag_for_execution", "Completed");
+			//output.write_data("flag_for_execution", "Completed");
 			input.update_row();
-			output.update_row();
+			//output.update_row();
 			
-		}while(input.move_forward() && output.move_forward());
+		}while(input.move_forward());
+			//&& output.move_forward());
 		
 		database_operation.close_conn();
 					

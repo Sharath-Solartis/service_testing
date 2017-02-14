@@ -28,7 +28,7 @@ public class app_DTC_Rate
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/08 DTC/Release1/Rating/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/08 DTC/Release1/Rating/configuration_file/config_json_CFAR.properties");
 		
 		
 		database_operation.conn_setup();
