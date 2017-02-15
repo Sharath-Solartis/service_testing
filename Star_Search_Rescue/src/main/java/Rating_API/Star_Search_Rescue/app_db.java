@@ -26,7 +26,7 @@ public class app_db
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
 				("Q:/Automation Team/1 Projects/06 Star Search_rescue/Search_n_Rescue/program_doc/Release_1/Rating/configuration_file/config_json.properties");
-		
+		//Comment Here
 		
 		database_operation.conn_setup();
     	System.setProperty("jsse.enableSNIExtension", "false");
