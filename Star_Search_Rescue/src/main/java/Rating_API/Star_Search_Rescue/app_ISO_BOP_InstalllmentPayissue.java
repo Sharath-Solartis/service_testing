@@ -16,7 +16,7 @@ import Supporting_Classes.request_response;
  * Hello world!
  *
  */
-public class app_ISO_BOP_Payissue 
+public class app_ISO_BOP_InstalllmentPayissue 
 {
     //private static FileInputStream configuration1;
 	//public static properties_handle config = null;
@@ -28,7 +28,7 @@ public class app_ISO_BOP_Payissue
     {
         //System.out.println( "Hello World!" );
 		database_operation.config = new properties_handle
-				("Q:/Automation Team/1 Projects/09 ISO/Release_6/Payissue/configuration_file/config_json.properties");
+				("Q:/Automation Team/1 Projects/09 ISO/Release_7/Install_Payissue/configuration_file/config_json.properties");
 		         
 		database_operation.conn_setup();
     	System.setProperty("jsse.enableSNIExtension", "false");
@@ -150,7 +150,7 @@ public class app_ISO_BOP_Payissue
 				for(int i=0;i<actual_column_size;i++)
 				{
 					System.out.println(actual_column_col[i]+"-"+json_elements.read_data(actual_column_col[i]));
-					String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+					String actual=((response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "")).replaceAll("\\\\","");
 					output.write_data(actual_column_col[i],actual);
 					//output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
 					

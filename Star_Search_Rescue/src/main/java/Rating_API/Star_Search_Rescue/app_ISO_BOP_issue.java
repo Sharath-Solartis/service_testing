@@ -81,7 +81,7 @@ public class app_ISO_BOP_issue
 				for(int i=0;i<actual_column_size;i++)
 				{
 					
-					String actual=(response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "");
+					String actual=((response.read(json_elements.read_data(actual_column_col[i])).replaceAll("\\[\"", "")).replaceAll("\"\\]", "")).replaceAll("\\\\","");
 					output.write_data(actual_column_col[i],actual);
 					//output.write_data(actual_column_col[i], response.read(json_elements.read_data(actual_column_col[i])));
 					
